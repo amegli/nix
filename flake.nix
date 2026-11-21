@@ -27,11 +27,12 @@
         };
     in
     {
-      # One entry per machine, named "user@hostname" (the short name from
-      # `hostname -s`). `home-manager switch --flake .` picks the entry that
-      # matches the machine it runs on.
+      # One entry per machine, named "user@hostname". `home-manager switch
+      # --flake .` picks the entry that matches the machine it runs on. Use the
+      # short hostname in lowercase: home-manager looks it up with GNU
+      # `hostname -s`, which lowercases the name on macOS.
       homeConfigurations = {
-        "andrewmegli@Andrews-MacBook-Pro" = mkHome {
+        "andrewmegli@andrews-macbook-pro" = mkHome {
           system = "aarch64-darwin";
           username = "andrewmegli";
         };
