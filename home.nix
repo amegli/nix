@@ -53,10 +53,15 @@
 
   programs.home-manager.enable = true;
 
-  # Emacs packages are installed by straight.el from ~/.config/emacs, so no
-  # extraPackages here. Nix-provided packages land in site-lisp and shadow the
-  # versions straight installs.
-  programs.emacs.enable = true;
+  # Emacs packages are installed by straight.el from ~/.config/emacs. Packages
+  # listed here land in site-lisp and shadow the versions straight installs, so
+  # keep this to packages with a compiled module. vterm is here because its
+  # module otherwise needs cmake and GNU libtool at first launch; the Emacs
+  # config loads it with `:straight nil`.
+  programs.emacs = {
+    enable = true;
+    extraPackages = epkgs: [ epkgs.vterm ];
+  };
 
   # Per-project Nix shells. The zsh hook is added automatically because
   # programs.zsh is enabled.
