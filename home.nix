@@ -27,8 +27,15 @@
 
   home.sessionPath = [ "$HOME/.local/bin" ];
 
+  home.sessionVariables.EDITOR = "nvim";
+
   programs.zsh = {
     enable = true;
+
+    # Grey suggestion from history while typing; right arrow accepts it.
+    autosuggestion.enable = true;
+    # Colors the command line while typing; unknown commands show in red.
+    syntaxHighlighting.enable = true;
 
     # Matches the oh-my-zsh defaults, including timestamps in the history file.
     history = {
@@ -50,6 +57,21 @@
       [[ -r ~/.zshrc.local ]] && source ~/.zshrc.local
     '';
   };
+
+  # Fuzzy finder. Ctrl-R searches history, Ctrl-T inserts a file path, and
+  # Alt-C changes directory. fd lists the candidates so .gitignore is honored.
+  programs.fzf = {
+    enable = true;
+    defaultCommand = "fd --type f";
+    fileWidgetCommand = "fd --type f";
+    changeDirWidgetCommand = "fd --type d";
+  };
+
+  # `z <part of a directory name>` jumps to a previously visited directory.
+  programs.zoxide.enable = true;
+
+  # Prompt. Replaces the oh-my-zsh theme, which stays set as the fallback.
+  programs.starship.enable = true;
 
   programs.home-manager.enable = true;
 
