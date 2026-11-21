@@ -18,11 +18,10 @@ Nix must be installed with flakes enabled.
 
 ```
 mkdir -p ~/.config/home-manager && cd ~/.config/home-manager
-nix flake init -t <url of this repo>
+nix flake init -t github:amegli/nix
 ```
 
-Edit the new `flake.nix`: set the input URL, `system`, and `username` (in both
-places). Then:
+Edit the new `flake.nix`: set `system` and `username` (in both places). Then:
 
 ```
 git init && git add flake.nix
@@ -34,7 +33,7 @@ Later switches are `home-manager switch --flake ~/.config/home-manager`.
 
 ## Change the shared configuration
 
-1. Edit and commit in this repo.
+1. Edit, commit, and push in this repo.
 2. In the private flake: `nix flake update home-config`.
 3. `home-manager switch --flake ~/.config/home-manager`.
 
@@ -46,8 +45,8 @@ home-manager switch --flake ~/.config/home-manager --override-input home-config 
 
 ## Update package versions
 
-Run `nix flake update` in this repo and commit `flake.lock`, then follow the
-three steps above.
+Run `nix flake update` in this repo, commit and push `flake.lock`, then follow
+steps 2 and 3 above.
 
 ## Use the module without mkHome
 

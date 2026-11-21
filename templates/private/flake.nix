@@ -1,9 +1,9 @@
 {
   description = "Home Manager configuration for this machine";
 
-  # Point this at the shared configuration: a git URL, or a local clone such
-  # as "git+file:///home/me/home-config".
-  inputs.home-config.url = "git+file:///path/to/home-config";
+  # The shared configuration. To use a local clone instead, set this to a path
+  # such as "git+file:///home/me/home-config".
+  inputs.home-config.url = "github:amegli/nix";
 
   outputs =
     { home-config, ... }:
