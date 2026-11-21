@@ -31,6 +31,21 @@ git add flake.lock
 
 Later switches are `home-manager switch --flake ~/.config/home-manager`.
 
+If the machine already has a `~/.zshrc` or `~/.zprofile`, add `-b pre-hm` to the
+first switch. Home Manager then renames the existing files to `*.pre-hm`
+instead of stopping.
+
+## zsh
+
+The shared module manages zsh: oh-my-zsh, history, direnv, and `~/.local/bin`
+on PATH. Two places hold what does not belong in this repo:
+
+- Machine-specific settings (extra PATH entries, toolchain setup) go in a
+  module in the private flake, passed through `extraModules`.
+- Secrets go in `~/.zshrc.local`, which the generated `.zshrc` sources last.
+  Keep them out of Nix files: everything Nix builds lands in `/nix/store`,
+  which every user on the machine can read.
+
 ## Change the shared configuration
 
 1. Edit, commit, and push in this repo.
