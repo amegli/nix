@@ -71,7 +71,11 @@
   programs.zoxide.enable = true;
 
   # Prompt. Replaces the oh-my-zsh theme, which stays set as the fallback.
-  programs.starship.enable = true;
+  programs.starship = {
+    enable = true;
+    # Otherwise the default region from ~/.aws/config shows in every prompt.
+    settings.aws.disabled = true;
+  };
 
   programs.home-manager.enable = true;
 
