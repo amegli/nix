@@ -1,8 +1,9 @@
-{ config, pkgs, ... }:
+# username is supplied per machine by mkHome in flake.nix.
+{ pkgs, username, ... }:
 
 {
-  home.username = "andrewmegli";
-  home.homeDirectory = "/Users/andrewmegli";
+  home.username = username;
+  home.homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${username}" else "/home/${username}";
 
   # Records the release this config was first written for. Leave it alone when
   # upgrading nixpkgs and home-manager.

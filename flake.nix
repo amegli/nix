@@ -12,19 +12,29 @@
   outputs =
     { nixpkgs, home-manager, ... }:
     let
-      system = "aarch64-darwin";
-      pkgs = nixpkgs.legacyPackages.${system};
+      # Builds one home configuration. home.nix is shared by every machine;
+      # per-machine modules can be appended through extraModules.
+      mkHome =
+        {
+          system,
+          username,
+          extraModules ? [ ],
+        }:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${system};
+          extraSpecialArgs = { inherit username; };
+          modules = [ ./home.nix ] ++ extraModules;
+        };
     in
     {
-      homeConfigurations."andrewmegli" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-
-        # Specify your home configuration modules here, for example,
-        # the path to your home.nix.
-        modules = [ ./home.nix ];
-
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
+      # One entry per machine, named "user@hostname" (the short name from
+      # `hostname -s`). `home-manager switch --flake .` picks the entry that
+      # matches the machine it runs on.
+      homeConfigurations = {
+        "andrewmegli@Andrews-MacBook-Pro" = mkHome {
+          system = "aarch64-darwin";
+          username = "andrewmegli";
+        };
       };
     };
 }
