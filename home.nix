@@ -15,6 +15,14 @@
     # Nix formatter and language server, for editing Nix files with eglot.
     nixfmt
     nil
+
+    gh
+
+    # Used by the Emacs config: markdown-command, the default face (Hack Nerd
+    # Font Mono), and the icon glyphs for nerd-icons.
+    pandoc
+    nerd-fonts.hack
+    nerd-fonts.symbols-only
   ];
 
   home.sessionPath = [ "$HOME/.local/bin" ];
