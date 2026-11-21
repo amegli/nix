@@ -3,66 +3,40 @@
 {
   home.username = "andrewmegli";
   home.homeDirectory = "/Users/andrewmegli";
+
+  # Records the release this config was first written for. Leave it alone when
+  # upgrading nixpkgs and home-manager.
   home.stateVersion = "25.05";
 
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
-  home.packages = [
-		pkgs.tmux
-		pkgs.neovim
-		pkgs.git
-		
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
+  home.packages = with pkgs; [
+    tmux
+    neovim
+    git
+
+    # Search tools used by Emacs (consult, projectile) and the shell.
+    ripgrep
+    fd
+
+    # Nix formatter and language server, for editing this config with eglot.
+    nixfmt
+    nil
   ];
 
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
-  home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
+  # zsh is not managed by Home Manager, so nothing sources hm-session-vars.sh
+  # and variables set here have no effect yet.
+  home.sessionVariables = { };
 
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
-  };
-
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. These will be explicitly sourced when using a
-  # shell provided by Home Manager. If you don't want to manage your shell
-  # through Home Manager then you have to manually source 'hm-session-vars.sh'
-  # located at either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/andrewmegli/etc/profile.d/hm-session-vars.sh
-  #
-  home.sessionVariables = {
-    # EDITOR = "emacs";
-  };
-
-  # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  programs.emacs = {
+  # Emacs packages are installed by straight.el from ~/.config/emacs, so no
+  # extraPackages here. Nix-provided packages land in site-lisp and shadow the
+  # versions straight installs.
+  programs.emacs.enable = true;
+
+  # Per-project Nix shells. zsh needs this line in ~/.zshrc to activate it:
+  #   eval "$(direnv hook zsh)"
+  programs.direnv = {
     enable = true;
-    extraPackages = epkgs: [
-      epkgs.nix-mode
-      epkgs.magit
-    ];
+    nix-direnv.enable = true;
   };
 }
