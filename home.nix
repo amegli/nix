@@ -1,6 +1,11 @@
 # Shared Home Manager module. The username, home directory, and stateVersion
 # are set per machine (see lib.mkHome in flake.nix), so none appear here.
-{ lib, pkgs, ... }:
+{
+  lib,
+  pkgs,
+  pkgsUnstable,
+  ...
+}:
 
 {
   home.packages = with pkgs; [
@@ -86,6 +91,9 @@
   # config loads it with `:straight nil`.
   programs.emacs = {
     enable = true;
+    # Emacs 31 is not in nixos-26.05, so it comes from nixos-unstable. vterm
+    # below is built against this package.
+    package = pkgsUnstable.emacs31;
     extraPackages = epkgs: [ epkgs.vterm ];
   };
 
