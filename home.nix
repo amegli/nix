@@ -97,6 +97,13 @@
     extraPackages = epkgs: [ epkgs.vterm ];
   };
 
+  # nixos-26.05 has Ghostty 1.3.1; nixos-unstable has 1.4.0. ghostty-bin is
+  # the official signed app, and the only Ghostty package that supports macOS.
+  programs.ghostty = {
+    enable = true;
+    package = pkgsUnstable.ghostty-bin;
+  };
+
   # Per-project Nix shells. The zsh hook is added automatically because
   # programs.zsh is enabled.
   programs.direnv = {
